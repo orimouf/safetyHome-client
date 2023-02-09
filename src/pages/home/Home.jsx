@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from 'react'
-import axios from "axios"
-import List from "../../components/list/List"
+import React from 'react'
+import './home.scss';
+import Navbar from '../../components/navbar/Navbar'
+import Sidebar from '../../components/sidebar/Sidebar'
+import Widget from '../../components/widget/widget';
+import Featured from '../../components/featured/featured';
+import Chart from '../../components/chart/Chart';
+import Table from '../../components/table/Table';
 
-function Home() {
-  const [lists, setLists] = useState([])
-  let title = "sac"
-
-  useEffect(() => {
-    const getRandomList = async () => {
-      try {
-        const res = await axios.get(`lists${title && "?title=" + title}`,{
-          headers:{
-            token:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNmRlZmMxNjE4ODI0MTQ2OTcwYjQwMyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MjQ4MTY2NSwiZXhwIjoxNjUyOTEzNjY1fQ.qy-RcBl_5GKYL2kMMNHBmfq7k9J42PxEjQJxDEz3cxE",
-          }
-        })
-        console.log(res);
-        setLists(res.data)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getRandomList()
-  }, [title])
+const Home = () => {
   return (
-    <div>
-      {lists.map((list, index) => 
-      <List key={list.title + "-" + index} list={list} index={index} />
-      )}
+    <div className='home'>
+      <Sidebar />
+      <div className="homeContainer">
+        <Navbar />
+        <div className="widgets">
+          <Widget type="user" />
+          <Widget type="order" />
+          <Widget type="earning" />
+          <Widget type="balance" />
+        </div>
+        <div className="charts">
+          <Featured />
+          <Chart aspect={2 / 1} title="Last 6 Months (Revenue)" />
+        </div>
+        <div className="listContainer">
+          <div className="listTitle">Latest Transactions</div>
+          <Table />
+        </div>
+      </div>
     </div>
   )
 }
